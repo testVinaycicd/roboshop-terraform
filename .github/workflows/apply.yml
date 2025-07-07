@@ -26,8 +26,8 @@ jobs:
   Terraform-apply:
     runs-on: self-hosted
     steps:
-      - name: check repo
-      - uses: actions/checkout@v4
+#      - name: check repo
+#      - uses: actions/checkout@v4
 
       - name: echo
         run: echo "hello sadassssssss"
