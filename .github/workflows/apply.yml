@@ -1,0 +1,59 @@
+name: terraform apply
+on: push
+jobs:
+
+  # before apply run init plan and then apply this is training so skipping to apply
+#  Terraform-Init:
+#    runs-on: self-hosted
+#    steps:
+#      - name: check repo
+#        uses: actions/checkout@v4
+#
+#      - name: terraform init
+#        run:
+#          terraform init -backend-config=env-dev/state.tfvars
+#
+#  Terraform-plan:
+#    runs-on: self-hosted
+#    steps:
+#      - name: check repo
+#        uses: actions/checkout@v4
+#
+#      - name: terraform plan
+#        run:
+#          terraform plan -backend-config=env-dev/state.tfvars
+#
+#  Terraform-apply:
+#    runs-on: self-hosted
+#    steps:
+#      - name: echo
+#        run: echo "hello sadasssssss"
+
+#      - name: check repo
+#        uses: actions/checkout@v4
+##
+#      - name: install vaultss
+#        run: |
+#          curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg
+#          echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/hashicorp.list
+#          sudo apt update && sudo apt install -y vault
+#
+#      - name: install terraform
+#        run: |
+#          sudo apt update
+#          sudo apt install -y terraform
+#
+##      - name: Debug vault token env (safe)
+##        run: |
+##          if [ -z "vault_token" ]; then
+##            echo "vault_token is missing"
+##            exit 1
+##          else
+##            echo "vault_token is set"
+##          fi
+#      - name: Terraform Apply
+#        run: |
+#          terraform init -backend-config=env-dev/state.tfvars
+#          terraform apply -var-file=env-dev/main.tfvars -var "vault_token=${{ secrets.token }}" -auto-approve
+
+
