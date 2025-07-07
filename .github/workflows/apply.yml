@@ -23,11 +23,11 @@ jobs:
 #        run:
 #          terraform plan -backend-config=env-dev/state.tfvars
 #
-#  Terraform-apply:
-#    runs-on: self-hosted
-#    steps:
-#      - name: echo
-#        run: echo "hello sadasssssss"
+  Terraform-apply:
+    runs-on: self-hosted
+    steps:
+      - name: echo
+        run: echo "hello sadasssssss"
 
 #      - name: check repo
 #        uses: actions/checkout@v4
