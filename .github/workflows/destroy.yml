@@ -1,17 +1,15 @@
 name: Terraform Destroy
 on: workflow_dispatch
 jobs:
-
-
   Terraform_Destroy:
     runs-on: self-hosted
     steps:
       - name: check out repo code
         uses: actions/checkout@v4
-      - name: Terraform init
+      - name: Terraform Destroy
         run : |
           terraform init -backend-config=env-dev/state.tfvars
           terraform destroy -var-file=env-dev/main.tfvars -var vault_token=${vault_token} -auto-approve
-
+          
         env :
           vault_token : ${{ secrets.vault_token }}
