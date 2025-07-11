@@ -8,6 +8,7 @@ jobs:
         uses: actions/checkout@v4
       - name: Terraform Destroy
         run : |
+          export PATH=/home/github/.local/bin:/home/github/bin:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin   
           terraform init -backend-config=env-dev/state.tfvars
           terraform destroy -var-file=env-dev/main.tfvars -var vault_token=${vault_token} -auto-approve
           

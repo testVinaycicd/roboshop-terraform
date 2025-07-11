@@ -24,10 +24,30 @@ jobs:
     steps:
       - name: check out repo code
         uses: actions/checkout@v4
-      - name: Terraform init
+      - name: Terraform apply
         run : |
+#          because aws was not found in github use account in some folders this like makes aws available in those folders mentioned
+          export PATH=/home/github/.local/bin:/home/github/bin:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin   
           terraform init -backend-config=env-dev/state.tfvars
           terraform apply -var-file=env-dev/main.tfvars -var vault_token=${vault_token} -auto-approve
 
+        env :
+          vault_token : ${{ secrets.vault_token }}
+
+
+  Helm_Install_Applications:
+    needs: Terraform_Apply
+    runs-on: self-hosted
+    steps:
+      - name: check out repo code
+        uses: actions/checkout@v4
+        with:
+          repository: testVinaycicd/roboshop-helm
+          path: helm
+      - name: Helm charts
+        run : |
+          export PATH=/home/github/.local/bin:/home/github/bin:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin   
+          cd helm
+          make dev
         env :
           vault_token : ${{ secrets.vault_token }}
