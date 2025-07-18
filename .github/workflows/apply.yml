@@ -55,8 +55,8 @@
 name: Terraform Apply
 on: push
 jobs:
-  terraform init:
-    run-on: self-hosted
+  terraform_init:
+    runs-on: self-hosted
     steps:
       - name: hello world
-        run: echo " hello world "
+        run: echo "hello world"
