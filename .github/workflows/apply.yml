@@ -60,17 +60,17 @@ jobs:
     steps:
       - name: hello world
         run: echo "hello world"
-  Terraform_Apply:
-    runs-on: self-hosted
+  terraform-apply:
+    runs-on: ubuntu-latest
     steps:
-      - name: check out repo code
+      - name: Check out repo code
         uses: actions/checkout@v4
+
       - name: Terraform apply
-        run : |
-#         because aws was not found in GitHub use account in some folders this like makes aws available in those folders mentioned
+        run: |
+          # Because aws was not found in GitHub, this path makes aws available
           export PATH=/home/github/.local/bin:/home/github/bin:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin
           terraform init -backend-config=env-dev/state.tfvars
           terraform apply -var-file=env-dev/main.tfvars -var vault_token=${vault_token} -auto-approve
-
-        env :
-          vault_token : ${{ secrets.vault_token }}
+        env:
+          vault_token: ${{ secrets.vault_token }}
