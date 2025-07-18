@@ -4,7 +4,7 @@
 ##  Terraform_Init:
 ##    runs-on: self-hosted
 ##    steps:
-##      - name: check out repo code
+##      - name: check out repo   code
 ##        uses: actions/checkout@v4
 ##      - name: Terraform init
 ##        run: |
