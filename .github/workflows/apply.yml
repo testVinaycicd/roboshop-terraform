@@ -54,21 +54,24 @@
 
 name: Terraform Apply
 on: push
+
 jobs:
   terraform_init:
     runs-on: self-hosted
     steps:
-      - name: hello world
+      - name: Hello World
         run: echo "hello world"
-  terraform-apply:
+
+  terraform_apply:
     runs-on: self-hosted
+    needs: terraform_init  # ✅ Ensure this runs after `terraform_init`
     steps:
       - name: Check out repo code
         uses: actions/checkout@v4
 
       - name: Terraform apply
         run: |
-#          Because aws was not found in GitHub, this path makes aws available
+          # Because aws was not found in GitHub, this path makes aws available
           export PATH=/home/github/.local/bin:/home/github/bin:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin
           terraform init -backend-config=env-dev/state.tfvars
           terraform apply -var-file=env-dev/main.tfvars -var vault_token=${vault_token} -auto-approve
