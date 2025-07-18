@@ -61,7 +61,7 @@ jobs:
       - name: hello world
         run: echo "hello world"
   terraform-apply:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
       - name: Check out repo code
         uses: actions/checkout@v4
