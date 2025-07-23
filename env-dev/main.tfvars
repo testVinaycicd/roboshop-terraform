@@ -54,6 +54,14 @@ eks = {
     addons = {
 
     }
+
+    access = {
+      workstation = {
+        role = "arn:aws:iam::886436958775:role/workstation-role"
+        kubernetes_groups = [""]
+      }
+    }
+
   }
 }
 

@@ -7,3 +7,4 @@ variable "vault_token" {
 }
 
 variable "eks" {}
+variable "access" {}
