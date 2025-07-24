@@ -53,7 +53,7 @@
 ##          vault_token : ${{ secrets.vault_token }}
 
 name: Terraform Apply
-on: push
+on: workflow_dispatch
 
 jobs:
   terraform_init:
@@ -64,7 +64,7 @@ jobs:
 
   terraform_apply:
     runs-on: self-hosted
-    needs: terraform_init  # ✅ Ensure this runs after `terraform_init`
+    needs: terraform_init  # ✅ Ensure this runs after `terraform_init `
     steps:
       - name: Check out repo code
         uses: actions/checkout@v4
