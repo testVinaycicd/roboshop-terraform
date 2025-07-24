@@ -19,3 +19,16 @@ resource "null_resource" "metrics-server" {
     command = "kubectl apply -f https://github.com/kubernetes-sigs/metrics-server/releases/latest/download/components.yaml"
   }
 }
+
+resource "null_resource" "argocd" {
+  depends_on = [null_resource.kubeconfig]
+
+  provisioner "local-exec" {
+    command = <<EOF
+kubectl create namespace argocd
+kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
+kubectl patch svc argocd-server -n argocd -p '{"spec": {"type": "LoadBalancer"}}'
+
+EOF
+  }
+}
