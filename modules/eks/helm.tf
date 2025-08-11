@@ -54,10 +54,10 @@ resource "helm_release" "cert-manager" {
   namespace        = "cert-manager"
   create_namespace = true
 
-  set {
+  set_sensitive =[ {
     name  = "crds.enabled"
     value = "true"
-  }
+  }]
 }
 
 resource "null_resource" "cert-manager-cluster-issuer" {
