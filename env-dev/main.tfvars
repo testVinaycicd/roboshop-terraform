@@ -46,9 +46,9 @@ eks = {
     eks_version = 1.32
     node_groups = {
         main = {
-          min_nodes = 3
-          max_nodes = 10
-          instance_type = ["t3.medium","t3.large"]
+          min_nodes = 1
+          max_nodes = 8
+          instance_type = ["t3.xlarge"]
         }
     }
     addons = {

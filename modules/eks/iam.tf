@@ -39,10 +39,6 @@ resource "aws_iam_role" "node-role" {
   })
 }
 
-resource "aws_iam_role_policy_attachment" "node_AmazonEKSClusterPolicy" {
-  policy_arn = "arn:aws:iam::aws:policy/AmazonEKSClusterPolicy"
-  role       = aws_iam_role.node-role.name
-}
 
 
 resource "aws_iam_role_policy_attachment" "node-AmazonEKSWorkerNodePolicy" {
