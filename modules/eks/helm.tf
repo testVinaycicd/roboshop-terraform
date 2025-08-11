@@ -23,7 +23,7 @@ resource "null_resource" "metrics-server" {
 
 
 resource "helm_release" "kube-prometheus-stack" {
-  depends_on = [null_resource.kubeconfig,helm_release.cert-manager,helm_release.ingress]
+  depends_on = [null_resource.kubeconfig,helm_release.cert-manager]
   name       = "kube-prom-stack"
   repository = "https://prometheus-community.github.io/helm-charts"
   chart      = "kube-prometheus-stack"
@@ -35,7 +35,7 @@ resource "helm_release" "kube-prometheus-stack" {
 }
 
 resource "helm_release" "ingress" {
-  depends_on = [null_resource.kubeconfig,helm_release.kube-prometheus-stack]
+  depends_on = [null_resource.kubeconfig]
   name       = "ingress-nginx"
   repository = "https://kubernetes.github.io/ingress-nginx"
   chart      = "ingress-nginx"
