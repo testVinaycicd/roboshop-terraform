@@ -20,25 +20,17 @@ resource "null_resource" "metrics-server" {
   }
 }
 
-resource "null_resource" "argocd" {
-  depends_on = [null_resource.kubeconfig]
 
-  provisioner "local-exec" {
-    command = <<EOF
-kubectl create namespace argocd
-kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml
-kubectl patch svc argocd-server -n argocd -p '{"spec": {"type": "LoadBalancer"}}'
-
-EOF
-  }
-}
 
 resource "helm_release" "kube-prometheus-stack" {
-  depends_on = [null_resource.kubeconfig]
+  depends_on = [null_resource.kubeconfig,helm_release.cert-manager,helm_release.ingress]
   name       = "kube-prom-stack"
   repository = "https://prometheus-community.github.io/helm-charts"
   chart      = "kube-prometheus-stack"
 
+  values = [
+    file("s(path.module)/helm-config/prom-stack-${var.env}.yml")
+  ]
 
 }
 
@@ -52,3 +44,53 @@ resource "helm_release" "ingress" {
   file("${ path.module }/helm-config/ingress.yml")
   ]
 }
+
+
+resource "helm_release" "cert-manager" {
+  depends_on       = [null_resource.kubeconfig]
+  name             = "cert-manager"
+  repository       = "https://charts.jetstack.io"
+  chart            = "cert-manager"
+  namespace        = "cert-manager"
+  create_namespace = true
+
+  set {
+    name  = "crds.enabled"
+    value = "true"
+  }
+}
+
+resource "null_resource" "cert-manager-cluster-issuer" {
+  depends_on = [null_resource.kubeconfig, helm_release.cert-manager]
+
+  provisioner "local-exec" {
+    command = "kubectl apply -f ${path.module}/helm-config/clusterIssuer.yml"
+  }
+}
+
+resource "helm_release" "external-dns" {
+  depends_on = [null_resource.kubeconfig]
+  name       = "external-dns"
+  repository = "https://kubernetes-sigs.github.io/external-dns/"
+  chart      = "external-dns"
+}
+
+resource "helm_release" "argocd" {
+  depends_on = [ helm_release.external-dns,helm_release.ingress,helm_release.cert-manager]
+    name = "argocd"
+    repository = "https://argoproj.github.io/argo-helm"
+    chart = "argo-cd"
+    namespace = "argocd"
+    create_namespace = true
+    wait = false
+
+  set {
+    name = "global.domain"
+    value="argocd-$(var.env).mikeydevops1.online"
+  }
+  values = [
+    file("s(path.module)/helm-config/argocd.yml")
+    ]
+}
+
+

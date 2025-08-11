@@ -52,7 +52,7 @@ eks = {
         }
     }
     addons = {
-
+      eks-pod-identity-agent ={}
     }
 
     access = {

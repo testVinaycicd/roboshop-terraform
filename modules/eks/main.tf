@@ -35,7 +35,7 @@ resource "aws_eks_node_group" "main" {
   depends_on = [aws_eks_cluster.main]
 
   # Increase timeout to give AWS more breathing room
-  wait_for_capacity_timeout = "30m"
+  # wait_for_capacity_timeout = "30m"
 
 
 }

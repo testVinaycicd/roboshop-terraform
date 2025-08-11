@@ -1,0 +1,36 @@
+grafana:
+  ingress:
+    enabled: true
+    ingressClassName: nginx
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt
+    hosts:
+      - grafana-dev.mikeydevops1.online
+    path: /
+    tls:
+      - secretName: grafana-general-tls
+        hosts:
+          - grafana-dev.mikeydevops1.online
+
+
+
+prometheus:
+  ingress:
+    enabled: true
+    ingressClassName: nginx
+    annotations:
+      cert-manager.io/cluster-issuer: letsencrypt
+    hosts:
+      - prometheus-dev.mikeydevops1.online
+    path: /
+    tls:
+      - secretName: prometheus-general-tls
+        hosts:
+          - prometheus-dev.mikeydevops1.online
+
+
+
+
+
+
+
