@@ -42,7 +42,7 @@ resource "aws_eks_node_group" "main" {
 
 
 resource "aws_eks_access_entry" "main" {
-  for_each = var.access
+  for_each          = var.access
   cluster_name      = aws_eks_cluster.main.name
   principal_arn     = each.value["role"]
   kubernetes_groups = each.value["kubernetes_groups"]
@@ -50,16 +50,17 @@ resource "aws_eks_access_entry" "main" {
 }
 
 resource "aws_eks_access_policy_association" "main" {
-  for_each = var.access
+  for_each      = var.access
   cluster_name  = aws_eks_cluster.main.name
-  policy_arn    = "arn:aws:eks::aws:cluster-access-policy/AmazonEKSClusterAdminPolicy"
+  policy_arn    = each.value["policy_arn"]
   principal_arn = each.value["role"]
 
   access_scope {
-    type       = "cluster"
-    namespaces = []
+    type       = each.value["access_scope_type"]
+    namespaces = each.value["access_scope_namespaces"]
   }
 }
+
 
 resource "aws_eks_pod_identity_association" "external-dns" {
   cluster_name    = aws_eks_cluster.main.name
