@@ -49,24 +49,24 @@ provider "kubernetes" {
   token                  = data.aws_eks_cluster_auth.main.token
 }
 
-resource "kubernetes_config_map_v1" "aws_auth" {
-  metadata {
-    name      = "aws-auth"
-    namespace = "kube-system"
-  }
-
-  data = {
-    mapRoles = yamlencode([
-      for k, v in var.access : {
-        rolearn  = "arn:aws:iam::633788536644:role/workstation-role"
-        username = replace(k, "_", "-")
-        groups   = ["system:masters"]
-      }
-    ])
-  }
-
-  depends_on = [aws_eks_access_entry.main]
-}
+# resource "kubernetes_config_map_v1" "aws_auth" {
+#   metadata {
+#     name      = "aws-auth"
+#     namespace = "kube-system"
+#   }
+#
+#   data = {
+#     mapRoles = yamlencode([
+#       for k, v in var.access : {
+#         rolearn  = "arn:aws:iam::633788536644:role/workstation-role"
+#         username = replace(k, "_", "-")
+#         groups   = ["system:masters"]
+#       }
+#     ])
+#   }
+#
+#   depends_on = [aws_eks_access_entry.main]
+# }
 
 
 resource "aws_eks_access_entry" "main" {
