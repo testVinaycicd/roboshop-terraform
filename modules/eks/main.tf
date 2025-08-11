@@ -59,7 +59,7 @@ resource "kubernetes_config_map_v1" "aws_auth" {
     mapRoles = yamlencode([
       for k, v in var.access : {
         rolearn  = "arn:aws:iam::633788536644:role/workstation-role"
-        username = replace(k, "_", "-") # or v.username if you have it
+        username = replace(k, "_", "-")
         groups   = ["system:masters"]
       }
     ])
