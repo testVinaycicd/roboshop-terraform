@@ -13,11 +13,7 @@ resource "aws_eks_cluster" "main" {
     subnet_ids = var.subnets
   }
 
-  # This ensures Terraform waits for the cluster to be ACTIVE
-  depends_on = [aws_eks_cluster.main]
 
-  # Increase timeout to give AWS more breathing room
-  wait_for_capacity_timeout = "30m"
 
 }
 
@@ -35,7 +31,11 @@ resource "aws_eks_node_group" "main" {
     min_size     = each.value["min_nodes"]
   }
 
+  # This ensures Terraform waits for the cluster to be ACTIVE
+  depends_on = [aws_eks_cluster.main]
 
+  # Increase timeout to give AWS more breathing room
+  wait_for_capacity_timeout = "30m"
 
 
 }
