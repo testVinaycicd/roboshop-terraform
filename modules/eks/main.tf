@@ -14,7 +14,6 @@ resource "aws_eks_cluster" "main" {
   }
 
 
-
 }
 
 resource "aws_eks_node_group" "main" {
