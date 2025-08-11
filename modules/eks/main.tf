@@ -23,7 +23,7 @@ resource "aws_eks_node_group" "main" {
   node_role_arn   = aws_iam_role.node-role.arn
   subnet_ids      = var.subnets
   instance_types = each.value["instance_type"]
-
+  # capacity_type   = each.value["capacity_type"]
   scaling_config {
     desired_size = each.value["min_nodes"]
     max_size     = each.value["max_nodes"]
@@ -39,6 +39,34 @@ resource "aws_eks_node_group" "main" {
 
 }
 
+data "aws_eks_cluster_auth" "main" {
+  name = aws_eks_cluster.main.name
+}
+
+provider "kubernetes" {
+  host                   = aws_eks_cluster.main.endpoint
+  cluster_ca_certificate = base64decode(aws_eks_cluster.main.certificate_authority[0].data)
+  token                  = data.aws_eks_cluster_auth.main.token
+}
+
+resource "kubernetes_config_map_v1" "aws_auth" {
+  metadata {
+    name      = "aws-auth"
+    namespace = "kube-system"
+  }
+
+  data = {
+    mapRoles = yamlencode([
+      for k, v in var.access : {
+        rolearn  = "arn:aws:iam::633788536644:role/workstation-role"
+        username = replace(k, "_", "-") # or v.username if you have it
+        groups   = ["system:masters"]
+      }
+    ])
+  }
+
+  depends_on = [aws_eks_access_entry.main]
+}
 
 
 resource "aws_eks_access_entry" "main" {
