@@ -13,6 +13,11 @@ resource "aws_eks_cluster" "main" {
     subnet_ids = var.subnets
   }
 
+  # This ensures Terraform waits for the cluster to be ACTIVE
+  depends_on = [aws_eks_cluster.main]
+
+  # Increase timeout to give AWS more breathing room
+  wait_for_capacity_timeout = "30m"
 
 }
 
@@ -55,6 +60,13 @@ resource "aws_eks_access_policy_association" "main" {
     type       = "cluster"
     namespaces = []
   }
+}
+
+resource "aws_eks_pod_identity_association" "external-dns" {
+  cluster_name    = aws_eks_cluster.main.name
+  namespace       = "default"
+  service_account = "external-dns"
+  role_arn        = aws_iam_role.external-dns.arn
 }
 
 # for cluster namespaces doesn't matter
