@@ -29,7 +29,7 @@ resource "helm_release" "kube-prometheus-stack" {
   chart      = "kube-prometheus-stack"
 
   values = [
-    file("s(path.module)/helm-config/prom-stack-${var.env}.yml")
+    file("${path.module}/helm-config/prom-stack-${var.env}.yml")
   ]
 
 }
@@ -41,7 +41,7 @@ resource "helm_release" "ingress" {
   chart      = "ingress-nginx"
 
   values = [
-  file("${ path.module }/helm-config/ingress.yml")
+  file("${path.module }/helm-config/ingress.yml")
   ]
 }
 
