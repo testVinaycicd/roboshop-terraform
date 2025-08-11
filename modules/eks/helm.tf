@@ -54,7 +54,7 @@ resource "helm_release" "cert-manager" {
   namespace        = "cert-manager"
   create_namespace = true
 
-  set_sensitive =[ {
+  set_sensitive = [ {
     name  = "crds.enabled"
     value = "true"
   }]
@@ -84,12 +84,14 @@ resource "helm_release" "argocd" {
     create_namespace = true
     wait = false
 
-  set {
+  set= [ {
     name = "global.domain"
     value="argocd-$(var.env).mikeydevops1.online"
-  }
+  }]
+
+
   values = [
-    file("s(path.module)/helm-config/argocd.yml")
+    file("${path.module}/helm-config/argocd.yml")
     ]
 }
 
